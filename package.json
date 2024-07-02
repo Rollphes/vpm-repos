@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "express": "^4.19.2",
+    "express-rate-limit": "^7.3.1",
     "markdown-it": "^14.1.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.2"

@@ -1,4 +1,5 @@
 import express from 'express'
+import RateLimit from 'express-rate-limit'
 import fs from 'fs'
 import MarkdownIt from 'markdown-it'
 
@@ -6,7 +7,13 @@ const app = express()
 const PORT = 3000
 const md = new MarkdownIt()
 
+const limiter = RateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+})
+
 app.use(express.static('./public'))
+app.use(limiter)
 
 app.get('/', (req, res) => {
   const readmeContent = fs.readFileSync('./README.md', 'utf-8')
