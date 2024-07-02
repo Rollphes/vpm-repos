@@ -4,9 +4,7 @@ env:
   listPublishDirectory: website
 
 on:
-  workflow_dispatch:
-  repository_dispatch:
-    types: [release_published]
+  workflow_dispatch:repository_dispatch
 
 
 permissions:
