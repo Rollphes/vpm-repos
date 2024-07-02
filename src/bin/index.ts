@@ -1,26 +1,22 @@
-import express from 'express'
-import RateLimit from 'express-rate-limit'
 import fs from 'fs'
 import MarkdownIt from 'markdown-it'
 
-const app = express()
-const PORT = 3000
-const md = new MarkdownIt()
+import { VpmRepoListing } from '@/lib/VpmRepoListing'
 
-const limiter = RateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-})
+const HTML_WEBSITE_PATH = './website/index.html'
 
-app.use(express.static('./public'))
-app.use(limiter)
+const vpmRepoListing = new VpmRepoListing()
 
-app.get('/', (req, res) => {
+async function build(): Promise<void> {
+  await vpmRepoListing.createVpmJson()
+
+  const md = new MarkdownIt()
+
   const readmeContent = fs.readFileSync('./README.md', 'utf-8')
   const htmlContent = md.render(readmeContent)
-  res.status(200)
-  res.setHeader('Content-Type', 'text/html')
-  res.send(`
+  fs.writeFileSync(
+    HTML_WEBSITE_PATH,
+    `
         <!DOCTYPE html>
         <html lang="en">
         <head>
@@ -33,16 +29,7 @@ app.get('/', (req, res) => {
             <div class="content">${htmlContent}</div>
         </body>
         </html>
-    `)
-})
-
-app.get('/vpm.json', (req, res) => {
-  const jsonContent = fs.readFileSync('./src/json/vpm.json', 'utf-8')
-  res.status(200)
-  res.setHeader('Content-Type', 'application/json')
-  res.send(jsonContent)
-})
-
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`)
-})
+    `,
+  )
+}
+void build()

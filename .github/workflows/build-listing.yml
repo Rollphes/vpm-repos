@@ -1,0 +1,49 @@
+name: Build Repo Listing
+
+env:
+  listPublishDirectory: website
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [release_published]
+
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: 'pages'
+  cancel-in-progress: true
+
+jobs:
+  build-listing:
+    name: build-listing
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Package Version Listing and Website
+        run:
+          npm run build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@f156874f8191504dae5b037505266ed5dda6c382
+
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@a753861a5debcf57bf8b404356158c8e1e33150c
+        with:
+          path: ${{ env.listPublishDirectory }}
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@9dbe3824824f8a1377b8e298bafde1a50ede43e5

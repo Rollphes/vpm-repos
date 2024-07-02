@@ -6,17 +6,11 @@ import { Release } from '@/types/github'
 
 export class VpmRepoListing {
   private static readonly GITHUB_API_BASE_URL = 'https://api.github.com/repos'
-  private static readonly VPM_JSON_PATH = './src/json/vpm.json'
+  private static readonly VPM_JSON_WEBSITE_PATH = 'website/vpm.json'
   private vpmData: VpmRepos
 
   constructor() {
-    if (fs.existsSync(VpmRepoListing.VPM_JSON_PATH)) {
-      this.vpmData = JSON.parse(
-        fs.readFileSync(VpmRepoListing.VPM_JSON_PATH, 'utf8'),
-      ) as VpmRepos
-    } else {
-      throw new Error('vpm.json file not found')
-    }
+    this.vpmData = config.vpmJsonInit as VpmRepos
   }
 
   public async createVpmJson(): Promise<void> {
@@ -63,7 +57,7 @@ export class VpmRepoListing {
       }
 
       fs.writeFileSync(
-        VpmRepoListing.VPM_JSON_PATH,
+        VpmRepoListing.VPM_JSON_WEBSITE_PATH,
         JSON.stringify(this.vpmData, null, 2),
       )
     }

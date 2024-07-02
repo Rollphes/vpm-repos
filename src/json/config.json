@@ -1,5 +1,12 @@
 {
     "repositories": [
         "Rollphes/BoothManager"
-    ]
+    ],
+    "vpmJsonInit": {
+        "name": "rollphes",
+        "id": "io.github.rollphes.vpm",
+        "author": "rollphes",
+        "url": "https://rollphes.github.io/vpm-repos/vpm.json",
+        "packages": {}
+    }
 }
