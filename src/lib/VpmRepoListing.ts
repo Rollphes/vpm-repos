@@ -51,8 +51,24 @@ export class VpmRepoListing {
             versions: {},
           }
         }
+
+        const zipAsset = release.assets.find((asset) =>
+          /.zip$/.test(asset.name),
+        )
+        if (!zipAsset) {
+          throw new Error(
+            `zip not found in the release assets of ${repo}@${release.tag_name}`,
+          )
+        }
+
         this.vpmData.packages[packageJson.name].versions[packageJson.version] =
           packageJson
+        this.vpmData.packages[packageJson.name].versions[
+          packageJson.version
+        ].repo = config.vpmJsonInit.url
+        this.vpmData.packages[packageJson.name].versions[
+          packageJson.version
+        ].url = zipAsset.browser_download_url
         console.log(`Adding ${packageJson.name}@${packageJson.version}`)
       }
 
