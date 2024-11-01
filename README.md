@@ -27,5 +27,4 @@ vpm add repo https://rollphes.github.io/vpm-repos/vpm.json
 ```
 
 # Packages
-
-- [BoothManager](https://github.com/rollphes/BoothManager)
+None
