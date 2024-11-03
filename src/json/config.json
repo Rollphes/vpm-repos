@@ -1,5 +1,6 @@
 {
     "repositories": [
+        "Rollphes/PlayerVoiceManager"
     ],
     "vpmJsonInit": {
         "name": "rollphes",
